@@ -1,6 +1,5 @@
 const productsRouter = require('./products.router');
-
-const salesRouter = 'placeholder';
+const salesRouter = require('./sales.router');
 
 module.exports = {
   productsRouter,
