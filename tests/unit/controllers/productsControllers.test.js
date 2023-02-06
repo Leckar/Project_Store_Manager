@@ -130,4 +130,31 @@ describe('The service layer should be able to manage all data successfully', fun
       expect(res.json).to.have.been.calledWith({ message: PRODUCT_NOT_FOUND });
     });
   });
+  describe('The createProduct service should resolve coherent requests', function () {
+    afterEach(sinon.restore);
+    it('should return all products in an object array with id and product name', async function () {
+      const req = { body: {
+        name: 'Elemento X'
+      } };
+      const res = {};
+      sinon.stub(productsServices, 'insertProduct').resolves({ type: null, message: [{ id: 4, name: 'Elemento X' }] });
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      await productsControllers.createProduct(req, res);
+
+      expect(res.status).to.have.been.calledWith(201);
+      expect(res.json).to.have.been.calledWith([{ id: 4, name: 'Elemento X' }]);
+    });
+    // it('should return an error if the given id is invalid', async function () {
+    //   const req = { params: { id: 999 } };
+    //   const res = {};
+    //   sinon.stub(productsServices, 'listById').resolves({ type: NOT_FOUND_STATUS, message: PRODUCT_NOT_FOUND });
+    //   res.status = sinon.stub().returns(res);
+    //   res.json = sinon.stub().returns();
+    //   await productsControllers.listProductById(req, res);
+
+    //   expect(res.status).to.have.been.calledWith(NOT_FOUND_STATUS);
+    //   expect(res.json).to.have.been.calledWith({ message: PRODUCT_NOT_FOUND });
+    // });
+  });
 });
