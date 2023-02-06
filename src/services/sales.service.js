@@ -11,12 +11,11 @@ const checkSalesId = async (data) => {
   return { type: NOT_FOUND_STATUS, message: 'Product not found' };
 };
 
-const salesListFormatter = ({ sales, products }) => {
-  const salesList = [...sales];
-  const prodList = [...products];
+const salesListFormatter = (data) => {
+  const { sales, products } = data;
   const arr = [];
-  salesList.forEach(({ id, date }) => {
-    prodList.forEach((e) => {
+  sales.forEach(({ id, date }) => {
+    products.forEach((e) => {
       if (id === e.sale_id) {
         arr.push({
           saleId: id,
