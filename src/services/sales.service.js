@@ -32,8 +32,24 @@ const salesListFormatter = ({ sales, products }) => {
 
 const listAll = async () => { 
   const result = await salesModels.listAll();
-  if (!result) return { type: 'NOT_FOUND_STATUS', message: 'Sales not found' };
   const newList = salesListFormatter(result);
+  return { type: null, message: newList };
+};
+const saleListFormatter = ({ sale, products }) => {
+  const prodList = [...products];
+  const arr = prodList.map((e) => (
+    { date: `${sale.date}`,
+      productId: e.product_id,
+      quantity: e.quantity,
+    }
+  ));
+  return arr;
+};
+const listSaleById = async (id) => {
+  const sale = await salesModels.listById(Number(id));
+  if (!sale) return { type: NOT_FOUND_STATUS, message: 'Sale not found' };
+  const products = await salesModels.listProductSaleById(Number(id));
+  const newList = saleListFormatter({ sale, products });
   return { type: null, message: newList };
 };
 
@@ -62,4 +78,5 @@ const insertSale = async (data) => {
 module.exports = {
   insertSale,
   listAll,
+  listSaleById,
 };

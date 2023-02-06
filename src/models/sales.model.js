@@ -10,6 +10,21 @@ const listAll = async () => {
   return { sales, products };
 };
 
+const listById = async (id) => {
+  const [[sale]] = await conn.execute(
+    'SELECT * FROM StoreManager.sales WHERE id = ?',
+    [id],
+  );
+  return sale;
+};
+const listProductSaleById = async (id) => {
+  const [products] = await conn.execute(
+    'SELECT * FROM StoreManager.sales_products WHERE sale_id = ?',
+    [id],
+  );
+  return products;
+};
+
 const insertNew = async (data) => {
   const [{ insertId }] = await conn.execute(
     'INSERT INTO StoreManager.sales (date) VALUES (now())',
@@ -26,4 +41,6 @@ const insertNew = async (data) => {
 module.exports = {
   insertNew,
   listAll,
+  listById,
+  listProductSaleById,
 };
