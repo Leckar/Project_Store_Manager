@@ -18,7 +18,7 @@ const validateQuantityParam = (req, res, next) => {
   const message = '"quantity" is required';
   let check = true;
   data.forEach(({ quantity }) => {
-    if (!quantity) check = false;
+    if (!quantity && quantity !== 0) check = false;
   });
   if (!check) return res.status(BAD_REQUEST_STATUS).json({ message });
   next();

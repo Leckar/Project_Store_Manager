@@ -5,17 +5,13 @@ const validateQuantity = require('./validations/validateQuantity');
 const { NOT_FOUND_STATUS } = httpStatuses;
 
 const checkSalesId = async (data) => {
-  const list = await productsModels.listAll();
-  const valid = data.every(({ productId }) => list.every(({ id }) => id === productId));
-  if (!valid) return false;
-  return true;
+  const list = await productsModels.listAllById();
+  const check = data.map(({ productId }) => list.some(({ id }) => id === productId));
+  if (check.every((e) => e)) return true;
+  return false;
 };
 
 const insertSale = async (data) => {
-  // console.log('service', data);
-  if (await checkSalesId(data)) {
-    return { type: NOT_FOUND_STATUS, message: 'Product not found' };
-  }
   let check;
   data.forEach(({ quantity }) => {
     const err = validateQuantity(quantity);
@@ -23,8 +19,11 @@ const insertSale = async (data) => {
   });
   if (check) {
     return check;
-  }  
-  console.log('validated');
+  }
+  const checkIds = await checkSalesId(data);
+  if (!checkIds) {
+    return { type: NOT_FOUND_STATUS, message: 'Product not found' };
+  }
   const id = await salesModels.insertNew(data);
   const message = {
     id,

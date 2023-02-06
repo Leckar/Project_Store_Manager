@@ -7,6 +7,13 @@ const listAll = async () => {
   return result;
 };
 
+const listAllById = async () => {
+  const [result] = await conn.execute(
+    'SELECT id FROM StoreManager.products ORDER BY id ASC',
+  );
+  return result;
+};
+
 const listById = async (id) => {
   const [[result]] = await conn.execute(
     'SELECT * FROM StoreManager.products WHERE id = ?',
@@ -26,6 +33,7 @@ const insertNew = async (data) => {
 
 module.exports = {
   listAll,
+  listAllById,
   listById,
   insertNew,
 };
