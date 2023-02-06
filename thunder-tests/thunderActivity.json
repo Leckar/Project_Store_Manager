@@ -4,13 +4,19 @@
     "colId": "history",
     "containerId": "",
     "name": "http://localhost:3000/products",
-    "url": "http://localhost:3000/products",
+    "url": "http://localhost:3000/products/search?q=Tra",
     "method": "GET",
     "sortNum": 0,
     "created": "2023-02-06T01:23:38.480Z",
-    "modified": "2023-02-06T19:45:51.960Z",
+    "modified": "2023-02-06T22:32:47.092Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "q",
+        "value": "Tra",
+        "isPath": false
+      }
+    ],
     "tests": []
   },
   {

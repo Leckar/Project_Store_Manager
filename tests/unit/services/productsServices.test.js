@@ -4,7 +4,7 @@ const { productsModels } = require('../../../src/models');
 const { productsServices } = require('../../../src/services');
 const { httpStatuses } = require('../../../src/utils/httpStatuses');
 
-const { NOT_FOUND_STATUS, BAD_REQUEST_STATUS, UNPROCESSABLE_ENTITY } = httpStatuses;
+const { NOT_FOUND_STATUS, UNPROCESSABLE_ENTITY } = httpStatuses;
 const PRODUCT_NOT_FOUND = 'Product not found';
 const NAME_TOO_SHORT = '"name" length must be at least 5 characters long';
 
