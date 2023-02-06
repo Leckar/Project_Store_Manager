@@ -213,22 +213,6 @@ describe('The service layer should be able to manage all data successfully', fun
       expect(res.json).to.have.been.calledWith({ message: PRODUCT_NOT_FOUND });
     });
   });
-  // describe('The updateProduct service should resolve coherent requests', function () {
-  //   afterEach(sinon.restore);
-  //   it('should return all products in an object array with id and product name', async function () {
-  //     const req = {
-  //       params: { id: 1 },
-  //     };
-  //     const res = {};
-  //     sinon.stub(productsServices, 'removeProduct').resolves({ type: null, message: '' });
-  //     res.status = sinon.stub().returns(res);
-  //     // res.json = sinon.stub().returns();
-  //     await productsControllers.deleteProduct(req, res);
-
-  //     expect(res.status).to.have.been.calledWith(204);
-  //     // expect(res.json).to.have.been.calledWith([{ id: 1, name: 'Elemento X' }]);
-  //   });
-  // });
   describe('The updateProduct service should resolve coherent requests', function () {
     afterEach(sinon.restore);
     it('should return all products in an object array with id and product name', async function () {
