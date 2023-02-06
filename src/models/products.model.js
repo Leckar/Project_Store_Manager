@@ -22,8 +22,7 @@ const listById = async (id) => {
   return result;
 };
  
-const insertNew = async (data) => {
-  const { name } = data;
+const insertNew = async (name) => {
   const [{ insertId }] = await conn.execute(
     'INSERT INTO StoreManager.products (name) VALUES (?)',
     [name],
@@ -31,9 +30,18 @@ const insertNew = async (data) => {
   return insertId;
 };
 
+const updateById = async (id, name) => {
+  const [result] = await conn.execute(
+    'UPDATE StoreManager.products SET name = (?) WHERE id = ?',
+    [name, id],
+  );
+  return result;
+};
+
 module.exports = {
   listAll,
   listAllById,
   listById,
   insertNew,
+  updateById,
 };

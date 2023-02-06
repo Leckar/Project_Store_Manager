@@ -1,7 +1,7 @@
 const { nameSchema } = require('./schemas');
 
-module.exports = (data) => {
-  const { error } = nameSchema.validate(data);
+module.exports = (name) => {
+  const { error } = nameSchema.validate({ name });
   if (error && error.details[0].type === 'string.base') {
     return { type: 'BAD_REQUEST_STATUS', message: error.details[0].message };
   }
