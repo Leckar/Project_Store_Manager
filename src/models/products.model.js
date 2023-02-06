@@ -31,11 +31,17 @@ const insertNew = async (name) => {
 };
 
 const updateById = async (id, name) => {
-  const [result] = await conn.execute(
+  await conn.execute( // não lembrava como fazer essa query e encontrei em https://intellipaat.com/blog/tutorial/sql-tutorial/update-query/#:~:text=The%20UPDATE%20command%20in%20SQL,the%20rows%20will%20be%20affected.
     'UPDATE StoreManager.products SET name = (?) WHERE id = ?',
     [name, id],
   );
-  return result;
+};
+
+const deleteById = async (id) => {
+  await conn.execute(
+    'DELETE FROM StoreManager.products WHERE id = ?',
+    [id],
+  );
 };
 
 module.exports = {
@@ -44,4 +50,5 @@ module.exports = {
   listById,
   insertNew,
   updateById,
+  deleteById,
 };
