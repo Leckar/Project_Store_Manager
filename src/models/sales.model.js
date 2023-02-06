@@ -38,9 +38,20 @@ const insertNew = async (data) => {
   return insertId;
 };
 
+const deleteSale = async (id) => {
+  Promise.all(await conn.execute(
+    'DELETE FROM StoreManager.sales WHERE id = ?',
+    [id],
+  ), await conn.execute(
+    'DELETE FROM sales_products WHERE sale_id = ?',
+    [id],
+  ));
+};
+
 module.exports = {
   insertNew,
   listAll,
   listById,
   listProductSaleById,
+  deleteSale,
 };
