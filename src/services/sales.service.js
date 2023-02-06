@@ -11,6 +11,32 @@ const checkSalesId = async (data) => {
   return false;
 };
 
+const salesListFormatter = ({ sales, products }) => {
+  const salesList = [...sales];
+  const prodList = [...products];
+  const arr = [];
+  salesList.forEach(({ id, date }) => {
+    prodList.forEach((e) => {
+      if (id === e.sale_id) {
+        arr.push({
+          saleId: id,
+          date: `${date}`,
+          productId: e.product_id,
+          quantity: e.quantity,
+        });
+      }
+    });
+  });
+  return arr;
+};
+
+const listAll = async () => { 
+  const result = await salesModels.listAll();
+  if (!result) return { type: 'NOT_FOUND_STATUS', message: 'Sales not found' };
+  const newList = salesListFormatter(result);
+  return { type: null, message: newList };
+};
+
 const insertSale = async (data) => {
   let check;
   data.forEach(({ quantity }) => {
@@ -35,4 +61,5 @@ const insertSale = async (data) => {
 
 module.exports = {
   insertSale,
+  listAll,
 };

@@ -1,5 +1,15 @@
 const conn = require('./connection');
 
+const listAll = async () => {
+  const [sales] = await conn.execute(
+    'SELECT * FROM StoreManager.sales',
+  );
+  const [products] = await conn.execute(
+    'SELECT * FROM StoreManager.sales_products',
+  );
+  return { sales, products };
+};
+
 const insertNew = async (data) => {
   const [{ insertId }] = await conn.execute(
     'INSERT INTO StoreManager.sales (date) VALUES (now())',
@@ -15,4 +25,5 @@ const insertNew = async (data) => {
 
 module.exports = {
   insertNew,
+  listAll,
 };

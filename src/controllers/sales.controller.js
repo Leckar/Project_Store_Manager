@@ -1,10 +1,11 @@
 const { salesServices } = require('../services');
 
-// const listSales = async (_req, res) => { 
-//   const { type, message } = await salesServices.listAll();
-//   if (type) return res.status(type).json(message);
-//   res.status(200).json(message);
-// };
+const listSales = async (_req, res) => { 
+  const { type, message } = await salesServices.listAll();
+  console.log(message);
+  if (type) return res.status(type).json(message);
+  res.status(200).json(message);
+};
 
 const newSale = async (req, res) => {
   const { body } = req;
@@ -14,6 +15,6 @@ const newSale = async (req, res) => {
 };
 
 module.exports = {
-  /* listSales, */
+  listSales,
   newSale,
 };
