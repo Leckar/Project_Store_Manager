@@ -6,6 +6,7 @@ const { httpStatuses } = require('../../../src/utils/httpStatuses');
 
 const { NOT_FOUND_STATUS, BAD_REQUEST_STATUS, UNPROCESSABLE_ENTITY } = httpStatuses;
 const PRODUCT_NOT_FOUND = 'Product not found';
+const NAME_TOO_SHORT = '"name" length must be at least 5 characters long';
 
 const { productsList } = require('../mocks');
 
@@ -91,7 +92,54 @@ describe('The service layer should be able to manage all data successfully', fun
 
       const result = await productsServices.insertProduct('Oi');
 
-      expect(result).to.be.deep.equal({ type: UNPROCESSABLE_ENTITY, message: '"name" length must be at least 5 characters long' });
+      expect(result).to.be.deep.equal({ type: UNPROCESSABLE_ENTITY, message: NAME_TOO_SHORT });
+    });
+  });
+  describe('The updateProduct service should resolve coherent requests', function () {
+    afterEach(sinon.restore);
+    it('should return an error if the id doesnt match any products', async function () {
+      sinon.stub(productsModels, 'updateById').resolves()
+      sinon.stub(productsModels, 'listById')
+        .onFirstCall().resolves(undefined);
+
+      const result = await productsServices.updateProduct(999, "Asas de borboleta");
+
+      expect(result).to.be.deep.equal({ type: NOT_FOUND_STATUS, message: PRODUCT_NOT_FOUND });
+    });
+    it('should return a newly edited product', async function () {
+      sinon.stub(productsModels, 'updateById').resolves()
+      sinon.stub(productsModels, 'listById')
+        .onFirstCall().resolves({ id: 1, name: "Martelo de Thor" })
+        .onSecondCall().resolves({ id: 1, name: "Martelo do Papaléguas" });
+
+      const result = await productsServices.updateProduct(1, 'Martelo do Papaléguas');
+
+      expect(result).to.be.deep.equal({ type: null, message: { id: 1, name: "Martelo do Papaléguas" } });
+    });
+    it('should return an error if the name is invalid', async function () {
+      const result = await productsServices.updateProduct(999, "As");
+
+      expect(result).to.be.deep.equal({ type: UNPROCESSABLE_ENTITY, message: NAME_TOO_SHORT });
+    });
+  });
+  describe('The removeProduct service should resolve coherent requests', function () {
+    afterEach(sinon.restore);
+    it('should return an error if the id doesnt match any products', async function () {
+      sinon.stub(productsModels, 'deleteById').resolves()
+      sinon.stub(productsModels, 'listById')
+        .onFirstCall().resolves(undefined);
+
+      const result = await productsServices.removeProduct(999);
+
+      expect(result).to.be.deep.equal({ type: NOT_FOUND_STATUS, message: PRODUCT_NOT_FOUND });
+    });
+    it('should work as intended if no errors occur', async function () {
+      sinon.stub(productsModels, 'deleteById').resolves()
+      sinon.stub(productsModels, 'listById').resolves({ id: 1, name: "Martelo de Thor" });
+
+      const result = await productsServices.removeProduct(1);
+
+      expect(result).to.be.deep.equal({ type: null, message: '' });
     });
   });
 });
