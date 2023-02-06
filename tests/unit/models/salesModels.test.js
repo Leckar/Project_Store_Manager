@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const { salesModels } = require('../../../src/models');
 const conn = require('../../../src/models/connection');
 
-const { salesList } = require('./mocks');
+const { salesList } = require('../mocks');
 
 describe('The model layer should be able to communicate successfully with the database', function () {
   describe('The listAll model should resolve coherent requests', function () {
@@ -62,25 +62,14 @@ describe('The model layer should be able to communicate successfully with the da
       expect(result).to.be.equal(undefined);
     });
   });
-  // describe('The updateById model should resolve coherent requests', function () {
-  //   afterEach(sinon.restore);
-  //   it('should NOT throw an error after successfully updating a product', async function () {
-  //     sinon.stub(conn, 'execute').resolves();
+  describe('The updateById model should resolve coherent requests', function () {
+    afterEach(sinon.restore);
+    it('should NOT throw an error after successfully updating a product', async function () {
+      sinon.stub(conn, 'execute').resolves();
 
-  //     const result = await productsModels.updateById(1, "Asas de borboleta");
+      const result = await salesModels.updateById(1, [{product_id: 1, quantity: 3}]);
 
-  //     expect(result).to.equal(undefined);
-  //   });
-  // });
-  // describe('The deleteById model should resolve coherent requests', function () {
-  //   afterEach(sinon.restore);
-  //   it('should successfully delete a product given a correct id', async function () {
-  //     sinon.stub(conn, 'execute').resolves()
-
-
-  //     const result = await productsModels.deleteById(1);
-
-  //     expect(result).to.equal(undefined);
-  //   });
-  // });
+      expect(result).to.equal(undefined);
+    });
+  });
 });

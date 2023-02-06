@@ -7,7 +7,6 @@ const idSchema = Joi.object({
 const nameSchema = Joi.object({
   name: Joi.string().min(5).required(),
 }).messages({ // O aluno Rafael França da turma 23 B me ensinou a fazer esse tipo de mensagem customizada.
-  'string.required': '"name" is required',
   'string.min': '"name" length must be at least 5 characters long',
 });
 

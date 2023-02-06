@@ -5,7 +5,7 @@ const conn = require('../../../src/models/connection');
 
 const { productsList, productQuery,
   filteredProductList, productsIds,
-  productById } = require('./mocks');
+  productById } = require('../mocks');
 
 describe('The model layer should be able to communicate successfully with the databaase', function () {
   describe('The listAll model should resolve coherent requests', function () {
