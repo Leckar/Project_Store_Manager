@@ -31,7 +31,7 @@ const insertNew = async (data) => {
   );
   await Promise.all(data.map(async ({ productId, quantity }) => {
       await conn.execute(
-        'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
+        'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
         [insertId, productId, quantity],
       );
     }));
@@ -43,9 +43,18 @@ const deleteSale = async (id) => {
     'DELETE FROM StoreManager.sales WHERE id = ?',
     [id],
   ), await conn.execute(
-    'DELETE FROM sales_products WHERE sale_id = ?',
+    'DELETE FROM StoreManager.sales_products WHERE sale_id = ?',
     [id],
   ));
+};
+
+const updateById = async (saleId, data) => {
+  await Promise.all(data.map(async ({ productId, quantity }) => {
+    await conn.execute(
+      'UPDATE StoreManager.sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
+      [quantity, saleId, productId],
+    );
+  }));
 };
 
 module.exports = {
@@ -54,4 +63,5 @@ module.exports = {
   listById,
   listProductSaleById,
   deleteSale,
+  updateById,
 };

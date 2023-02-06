@@ -7,8 +7,8 @@ const { NOT_FOUND_STATUS } = httpStatuses;
 const checkSalesId = async (data) => {
   const list = await productsModels.listAllById();
   const check = data.map(({ productId }) => list.some(({ id }) => id === productId));
-  if (check.every((e) => e)) return true;
-  return false;
+  if (check.every((e) => e)) return { type: null, message: '' };
+  return { type: NOT_FOUND_STATUS, message: 'Product not found' };
 };
 
 const salesListFormatter = ({ sales, products }) => {
@@ -63,8 +63,8 @@ const insertSale = async (data) => {
     return check;
   }
   const checkIds = await checkSalesId(data);
-  if (!checkIds) {
-    return { type: NOT_FOUND_STATUS, message: 'Product not found' };
+  if (checkIds.type) {
+    return checkIds;
   }
   const id = await salesModels.insertNew(data);
   const message = {
@@ -84,9 +84,31 @@ const deleteSale = async (data) => {
   return { type: null, message: '' };
 };
 
+const updateSale = async (saleId, itemsUpdated) => {
+  let check;
+  itemsUpdated.forEach(({ quantity }) => {
+    const err = validateQuantity(quantity);
+    if (err.type) check = err;
+  });
+  if (check) {
+    return check;
+  }
+  const checkIds = await checkSalesId(itemsUpdated);
+  if (checkIds.type) {
+    return checkIds;
+  }
+  const checkSaleId = await salesModels.listById(saleId);
+  if (!checkSaleId) {
+    return { type: NOT_FOUND_STATUS, message: 'Sale not found' };
+  }
+  await salesModels.updateById(saleId, itemsUpdated);
+  return { type: null, message: { saleId, itemsUpdated } };
+};
+
 module.exports = {
   insertSale,
   listAll,
   listSaleById,
   deleteSale,
+  updateSale,
 };
